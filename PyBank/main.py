@@ -1,83 +1,71 @@
-#PYBANK
-#Your task is to create a Python script that analyzes the records to calculate each of the following:
-'''open csv file
-create csv reader
-skip the header
-define variables
-'''
-import os
-import csv
+#define variables
 Months = []
 Profits = []
-ProfitLosses = []
-profit = 0
+ProfitChanges = []
+    
+#create csv path string
+import os
+import csv
+PyBankCSVPath = os.path.join("Resources", "budget_data.csv")
 
-PyBankCSVpath = os.path.join('Resources', 'budget_data.csv')
-with open (PyBankCSVpath, newline='') as PyBankCSV:
-    PyBank_csvreader = csv.reader(PyBankCSV, delimiter = ',')
+#open CSV, create reader object, skip header
+
+with open (PyBankCSVPath, newline="") as PyBankCSV:
+    PyBank_csvreader = csv.reader(PyBankCSV, delimiter = ",")
     PyBank_header = next(PyBank_csvreader)
-    #The total number of months included in the dataset
-    '''
-    append empty list with months
-    calculate len of list and print outside of loop
-    '''
+    
     for row in PyBank_csvreader:
+        #fill list with months
         Months.append(row[0])
-            
-        #The net total amount of "Profit/Losses" over the entire period
-        '''
-        create a list
-        fill it with index (1) of every row
-        sum the list
-        '''
-        ProfitLosses.append(int(row[1]))
+                
+      
+        #fill list with profits
+        Profits.append(int(row[1]))
+                
+    TotalMonths = len(Months)
+    TotalProfit = sum(Profits)
+    
+    #create tuple pairs of each number in profits and the number after it
+    #subtract first value from second value to calculate change
+    #fill list with values
+    ProfitChanges = [second - first for first,second in zip(Profits, Profits[1:])]
 
-        profit = int(profit) + int(row[1])
-        Profits.append(int(profit))
-        profit = int((row-1)[1])
 
-
+    #calculate average of list
+    TotalChange = sum(ProfitChanges)
+    AverageChange = round((TotalChange/(len(ProfitChanges))), 2)
+    
+    #add value to beginning of list for accurate indexes
+    ProfitChanges.insert(0,0)
+    str("${:,.2f}".format(*ProfitChanges))
+    
+    #find the largest number in change list and its index
+    GreatestIncrease = max(ProfitChanges)
+    GreatestIncreaseIndex = ProfitChanges.index(GreatestIncrease)       
         
-#The average of the changes in "Profit/Losses" over the entire period
-'''
-sum each item in the index(1) list with the item after it
-put in a new list
-calculate the average
-'''
-TotalMonths = int(len(Months))
-TotalProfitLosses = int(sum(ProfitLosses))
-AverageProfitLosses = int(sum(Profits)/(len(Profits)))
-#The greatest increase in profits (date and amount) over the entire period
-'''
-find the largest number in above list
-find what row it is
-grab index(0) and index (1)
-'''
-GreatestIncrease = int(max(Profits))
-GreatestIncreaseIndex = Profits.index(GreatestIncrease)
-print (GreatestIncrease)
-        
-     
-#The greatest decrease in losses (date and amount) over the entire period
-'''
-find the smallest number in above list
-find what row it is
-grab index(0) and index (1)
-'''
-GreatestDecrease = int(min(Profits))
-GreatestDecreaseIndex = Profits.index(GreatestDecrease)
-print (GreatestDecrease)
+    #find the smallest number in change list and its index
+    GreatestDecrease = min(ProfitChanges)
+    GreatestDecreaseIndex = ProfitChanges.index(GreatestDecrease)
 
-CombinedList = list(zip(Months, Profits))
+    #create list filled with tuples of months and changes formtted as dollars
+    CombinedList = list(zip(Months, ProfitChanges))
 
-print("Total Months: " + str(TotalMonths))
-print("Total: " + str(TotalProfitLosses))
-print("Average Change: " + str(AverageProfitLosses))
-print("Greatest Increase in Profits: " + str(CombinedList[GreatestIncreaseIndex]))
-print("Greatest Decrease in Profits: " + str(CombinedList[GreatestDecreaseIndex]))        
-#In addition, your final script should both print the analysis to the terminal 
-#and export a text file with the results
+    #save results as lines
+    Line1 = "Total Months: " + str(TotalMonths)
+    Line2 = "Total: $" + str(TotalProfit)
+    Line3 = "Average Change: $" + str(AverageChange)
+    Line4 = "Greatest Increase in Profits: " + str(CombinedList[GreatestIncreaseIndex])
+    Line5 = "Greatest Decrease in Profits: " + str(CombinedList[GreatestDecreaseIndex])
 
-
-
-
+    #print results
+    print(Line1)
+    print(Line2)
+    print(Line3)
+    print(Line4)
+    print(Line5)        
+    
+    #export results to text file
+    output = os.path.join("results.txt")
+    with open(output, "w", newline="") as resultsfile:
+        resultsfile.writelines([Line1+"\n", Line2+"\n", Line3+"\n", Line4+"\n", Line5])
+    
