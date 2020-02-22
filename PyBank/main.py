@@ -6,13 +6,13 @@ ProfitChanges = []
 #create csv path string
 import os
 import csv
-PyBankCSVPath = os.path.join("Resources", "budget_data.csv")
+pybank_csvpath = os.path.join("Resources", "budget_data.csv")
 
 #open CSV, create reader object, skip header
 
-with open (PyBankCSVPath, newline="") as PyBankCSV:
-    PyBank_csvreader = csv.reader(PyBankCSV, delimiter = ",")
-    PyBank_header = next(PyBank_csvreader)
+with open (pybank_csvpath), newline="") as PyBankCsv:
+    pybank_csvreader = csv.reader(PyBankCsv, delimiter = ",")
+    pybank_header = next(pybank_csvreader)
     
     for row in PyBank_csvreader:
         #fill list with months
