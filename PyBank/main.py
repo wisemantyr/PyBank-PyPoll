@@ -10,11 +10,11 @@ pybank_csvpath = os.path.join("Resources", "budget_data.csv")
 
 #open CSV, create reader object, skip header
 
-with open (pybank_csvpath), newline="") as PyBankCsv:
+with open (pybank_csvpath, newline="") as PyBankCsv:
     pybank_csvreader = csv.reader(PyBankCsv, delimiter = ",")
     pybank_header = next(pybank_csvreader)
     
-    for row in PyBank_csvreader:
+    for row in pybank_csvreader:
         #fill list with months
         Months.append(row[0])
                 
