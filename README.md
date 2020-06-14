@@ -1,8 +1,6 @@
 # python-challenge
 
-*(Data provided. Code original)*
-
-## Full Exercise Description
+## Exercise Description
 
 #### PyBank
 
